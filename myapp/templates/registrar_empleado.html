@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registrar Empleado</title>
+</head>
+<body>
+    <div>
+        <a href="/">Listar Empleados</a> |
+        <a href="/registrar_empleado/">Registrar Empleados</a> |
+        <a href="/crear_prestamo/">Crear Prestamo</a> |
+        <a href="/listar_prestamo/">Crear Prestamo</a> |
+    </div>
+    <h1>Registrar Empleado</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Registrar</button>
+    </form>
+</body>
+</html>
