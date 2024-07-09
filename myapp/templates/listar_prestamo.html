@@ -20,6 +20,12 @@
         <p>Monto del Préstamo: {{ prestamo.monto_prestamo }}</p>
         <p>Monto a Pagar: {{ prestamo.monto_pagar }}</p>
         <p>Cantidad de Cuotas: {{ prestamo.cantidad_cuotas }}</p>
+        <a href="{% url 'detalle_prestamo' id_prestamo=prestamo.id_prestamo %}">
+            <button>Detalle del Prestamo</button>
+        </a>
+        <a href="{% url 'eliminar_prestamo' id_prestamo=prestamo.id_prestamo %}">
+            <button>Eliminar Prestamo</button>
+        </a>
         <hr>
     {% endfor %}
 </body>

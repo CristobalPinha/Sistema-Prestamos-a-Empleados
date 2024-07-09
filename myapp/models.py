@@ -18,7 +18,7 @@ class Empleado(models.Model):
     direccion_empleado = models.CharField(max_length=100)
     Comuna = models.ForeignKey(Comuna, on_delete=models.CASCADE)
     def __str__(self):
-        return self.RUT_empleado
+        return f'{self.nombre_empleado} {self.apellido_empleado}'
 
 class TipoPrestamo(models.Model):
     id_tipo_prestamo = models.AutoField(primary_key=True)

@@ -5,15 +5,38 @@
     <title>Detalle del Préstamo</title>
 </head>
 <body>
-    <h1>Detalle del Préstamo {{ prestamo.id_prestamo }}</h1>
-    <p>Empleado: {{ prestamo.Empleado.nombre_empleado }}</p> <!-- Asumiendo que Empleado tiene un campo nombre -->
-    <p>Tipo de Préstamo: {{ prestamo.TipoPrestamo.tipo_de_prestamo }}</p> <!-- Asumiendo que TipoPrestamo tiene un campo descripcion -->
+    <h1>Detalles del Préstamo</h1>
+
+<div>
+    <p>ID del Préstamo: {{ prestamo.id_prestamo }}</p>
+    <p>Empleado: {{ prestamo.Empleado.nombre_empleado }} {{ prestamo.Empleado.apellido_empleado }}</p>
+    <p>Tipo de Préstamo: {{ prestamo.TipoPrestamo.tipo_prestamo }}</p>
     <p>Monto del Préstamo: {{ prestamo.monto_prestamo }}</p>
     <p>Monto a Pagar: {{ prestamo.monto_pagar }}</p>
     <p>Cantidad de Cuotas: {{ prestamo.cantidad_cuotas }}</p>
-    <td>
-        <a href="{% url 'listar_prestamo' %}">
-            <button>Lista de prestamo</button>
-        </a>
+</div>
+
+<h2>Cuotas</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Número de Cuota</th>
+            <th>Monto</th>
+            <th>Fecha de Emisión</th>
+            <th>Fecha de Vencimiento</th>
+            <th>Fecha de Pago</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for cuota in cuotas %}
+        <tr>
+            <td>{{ cuota.numero_cuota }}</td>
+            <td>{{ cuota.monto_cuota }}</td>
+            <td>{{ cuota.cuota_fecha_emision|date:"d/m/Y H:i" }}</td>
+            <td>{{ cuota.cuota_fecha_vencimiento|date:"d/m/Y" }}</td>>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 </body>
 </html>
