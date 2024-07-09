@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle del Préstamo</title>
+</head>
+<body>
+    <h1>Detalle del Préstamo {{ prestamo.id_prestamo }}</h1>
+    <p>Empleado: {{ prestamo.Empleado.nombre_empleado }}</p> <!-- Asumiendo que Empleado tiene un campo nombre -->
+    <p>Tipo de Préstamo: {{ prestamo.TipoPrestamo.tipo_de_prestamo }}</p> <!-- Asumiendo que TipoPrestamo tiene un campo descripcion -->
+    <p>Monto del Préstamo: {{ prestamo.monto_prestamo }}</p>
+    <p>Monto a Pagar: {{ prestamo.monto_pagar }}</p>
+    <p>Cantidad de Cuotas: {{ prestamo.cantidad_cuotas }}</p>
+    <td>
+        <a href="{% url 'listar_prestamo' %}">
+            <button>Lista de prestamo</button>
+        </a>
+</body>
+</html>
