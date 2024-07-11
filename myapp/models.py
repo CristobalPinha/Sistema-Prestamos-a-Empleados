@@ -24,7 +24,6 @@ class TipoPrestamo(models.Model):
     id_tipo_prestamo = models.AutoField(primary_key=True)
     tipo_prestamo = models.CharField(max_length=50)
     tasa_de_interes = models.IntegerField()  
-    
     def __str__(self):
         return self.tipo_prestamo
 
