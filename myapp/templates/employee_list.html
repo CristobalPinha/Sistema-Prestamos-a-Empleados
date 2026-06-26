@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Listar Empleados{% endblock %}
+
+{% block content %}
+<h1>Empleados</h1>
+<table>
+    <thead>
+        <tr>
+            <th>RUT</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Direccion</th>
+            <th>Comuna</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for empleado in empleados %}
+        <tr>
+            <td>{{ empleado.RUT_empleado }}</td>
+            <td>{{ empleado.nombre_empleado }}</td>
+            <td>{{ empleado.apellido_empleado }}</td>
+            <td>{{ empleado.direccion_empleado }}</td>
+            <td>{{ empleado.Comuna.nombre_comuna }}</td>
+            <td>
+                <a href="{% url 'employee_update' RUT_empleado=empleado.RUT_empleado %}">Actualizar</a>
+                <a href="{% url 'employee_delete' RUT_empleado=empleado.RUT_empleado %}">Eliminar</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">No hay empleados registrados.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

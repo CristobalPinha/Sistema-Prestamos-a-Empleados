@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}Detalle del Prestamo{% endblock %}
+
+{% block content %}
+<h1>Detalle del Prestamo</h1>
+<p>ID: {{ prestamo.id_prestamo }}</p>
+<p>Empleado: {{ prestamo.Empleado.nombre_empleado }} {{ prestamo.Empleado.apellido_empleado }}</p>
+<p>Tipo: {{ prestamo.TipoPrestamo.tipo_prestamo }}</p>
+<p>Monto prestado: {{ prestamo.monto_prestamo }}</p>
+<p>Monto a pagar: {{ prestamo.monto_pagar }}</p>
+<p>Cantidad de cuotas: {{ prestamo.cantidad_cuotas }}</p>
+
+<h2>Cuotas</h2>
+<table>
+    <thead>
+        <tr>
+            <th>N</th>
+            <th>Monto</th>
+            <th>Fecha emision</th>
+            <th>Fecha vencimiento</th>
+            <th>Fecha pago</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for cuota in cuotas %}
+        <tr>
+            <td>{{ cuota.numero_cuota }}</td>
+            <td>{{ cuota.monto_cuota }}</td>
+            <td>{{ cuota.cuota_fecha_emision|date:"d/m/Y" }}</td>
+            <td>{{ cuota.cuota_fecha_vencimiento|date:"d/m/Y" }}</td>
+            <td>{{ cuota.cuota_fecha_pago|date:"d/m/Y"|default:"Pendiente" }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

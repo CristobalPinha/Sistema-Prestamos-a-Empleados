@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Listado de Prestamos{% endblock %}
+
+{% block content %}
+<h1>Listado de Prestamos</h1>
+{% for prestamo in prestamos %}
+    {% ifchanged prestamo.Empleado.nombre_empleado %}
+        <h2>{{ prestamo.Empleado.nombre_empleado }} {{ prestamo.Empleado.apellido_empleado }}</h2>
+    {% endifchanged %}
+    <p>Tipo: {{ prestamo.TipoPrestamo.tipo_prestamo }}</p>
+    <p>Monto prestado: {{ prestamo.monto_prestamo }}</p>
+    <p>Monto a pagar: {{ prestamo.monto_pagar }}</p>
+    <p>Cuotas: {{ prestamo.cantidad_cuotas }}</p>
+    <a href="{% url 'loan_detail' id_prestamo=prestamo.id_prestamo %}">Ver detalle</a>
+    <a href="{% url 'loan_delete' id_prestamo=prestamo.id_prestamo %}">Eliminar</a>
+    <hr>
+{% empty %}
+    <p>No hay prestamos registrados.</p>
+{% endfor %}
+{% endblock %}

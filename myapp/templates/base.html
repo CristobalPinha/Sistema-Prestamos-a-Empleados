@@ -1,0 +1,25 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Sistema de Prestamos{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'myapp/css/styles.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <nav>
+        <a href="{% url 'employee_list' %}">Empleados</a>
+        <a href="{% url 'employee_create' %}">Registrar Empleado</a>
+        <a href="{% url 'loan_create' %}">Crear Prestamo</a>
+        <a href="{% url 'loan_list' %}">Listar Prestamos</a>
+    </nav>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
