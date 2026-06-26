@@ -38,6 +38,33 @@ La aplicación expone una API REST bajo el prefijo `/api/` construida con Django
 
 La interfaz navegable de DRF está disponible en `http://127.0.0.1:8000/api/`.
 
+## Tests
+
+El proyecto incluye 15 tests automatizados que verifican la lógica de negocio y los endpoints de la API.
+
+```powershell
+python manage.py test myapp --verbosity=2
+```
+
+**Formato de RUT aceptado:** con o sin puntos, con guión obligatorio. El dígito verificador puede ser un número del 0 al 9 o la letra K (mayúscula o minúscula). El sistema normaliza automáticamente al formato `12345678-9`.
+
+```
+Válido:   12345678-9   ✓
+Válido:   12.345.678-9 ✓  (los puntos se eliminan automáticamente)
+Válido:   19654321-K   ✓
+Inválido: 123456789    ✗  (sin guión)
+Inválido: 12345678-X   ✗  (dígito verificador inválido)
+Inválido: 12345678-5   ✗  (dígito verificador incorrecto)
+```
+
+| Grupo | Tests | Qué verifica |
+|-------|-------|--------------|
+| `ValidarRutTest` | 8 | Formato y dígito verificador del RUT chileno (casos válidos e inválidos) |
+| `PrestamoCalculoTest` | 3 | Cálculo correcto del monto total con distintas tasas de interés |
+| `GenerarCuotasTest` | 5 | Cantidad, monto, numeración, fechas y estado inicial de las cuotas |
+| `EmpleadoAPITest` | 4 | Endpoints de empleados: listado, detalle y 404 |
+| `PrestamoAPITest` | 3 | Endpoints de préstamos: listado, cuotas anidadas y endpoint /cuotas/ |
+
 ## Tecnologías
 
 - Python 3.14
