@@ -17,10 +17,32 @@ Aplicación web desarrollada con Django para gestionar préstamos otorgados a em
 - Ver el detalle de las cuotas de cada préstamo
 - Registrar la fecha de pago de cada cuota para llevar el seguimiento
 
+## API REST
+
+La aplicación expone una API REST bajo el prefijo `/api/` construida con Django REST Framework.
+
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| GET | `/api/empleados/` | Lista todos los empleados |
+| GET | `/api/empleados/{rut}/` | Detalle de un empleado |
+| POST | `/api/empleados/` | Crear un empleado |
+| PUT | `/api/empleados/{rut}/` | Editar un empleado |
+| DELETE | `/api/empleados/{rut}/` | Eliminar un empleado |
+| GET | `/api/prestamos/` | Lista todos los préstamos |
+| GET | `/api/prestamos/{id}/` | Detalle de un préstamo con sus cuotas |
+| POST | `/api/prestamos/` | Crear un préstamo |
+| DELETE | `/api/prestamos/{id}/` | Eliminar un préstamo |
+| GET | `/api/prestamos/{id}/cuotas/` | Cuotas de un préstamo específico |
+| GET | `/api/tipos-prestamo/` | Lista los tipos de préstamo |
+| GET | `/api/comunas/` | Lista las comunas |
+
+La interfaz navegable de DRF está disponible en `http://127.0.0.1:8000/api/`.
+
 ## Tecnologías
 
 - Python 3.14
 - Django 5.0.6
+- Django REST Framework 3.15.2
 - MySQL
 - PyMySQL (conector de base de datos)
 

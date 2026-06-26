@@ -1,6 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Empleado, Prestamo
+from rest_framework import viewsets
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from .models import Empleado, Prestamo, Cuota, TipoPrestamo, Comuna
 from .forms import EmpleadoForm, PrestamoForm
+from .serializers import EmpleadoSerializer, PrestamoSerializer, CuotaSerializer, TipoPrestamoSerializer, ComunaSerializer
 from .services import generar_cuotas
 
 
@@ -65,3 +69,35 @@ def loan_delete(request, id_prestamo):
     prestamo = get_object_or_404(Prestamo, id_prestamo=id_prestamo)
     prestamo.delete()
     return redirect('loan_list')
+
+
+# ─── API REST ────────────────────────────────────────────────────────────────
+
+class EmpleadoViewSet(viewsets.ModelViewSet):
+    # ModelViewSet genera automáticamente: list, retrieve, create, update, destroy
+    queryset = Empleado.objects.all()
+    serializer_class = EmpleadoSerializer
+
+
+class PrestamoViewSet(viewsets.ModelViewSet):
+    queryset = Prestamo.objects.all()
+    serializer_class = PrestamoSerializer
+
+    # Acción extra: GET /api/prestamos/{id}/cuotas/
+    # Sin esto, las cuotas solo aparecen anidadas dentro del préstamo
+    @action(detail=True, methods=['get'])
+    def cuotas(self, request, pk=None):
+        prestamo = self.get_object()
+        cuotas = prestamo.cuotas.all()
+        serializer = CuotaSerializer(cuotas, many=True)
+        return Response(serializer.data)
+
+
+class TipoPrestamoViewSet(viewsets.ModelViewSet):
+    queryset = TipoPrestamo.objects.all()
+    serializer_class = TipoPrestamoSerializer
+
+
+class ComunaViewSet(viewsets.ModelViewSet):
+    queryset = Comuna.objects.all()
+    serializer_class = ComunaSerializer
