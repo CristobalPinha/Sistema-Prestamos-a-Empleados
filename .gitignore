@@ -1,2 +1,16 @@
 venvPE/
 .env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Django
+*.log
+db.sqlite3
+media/
+
+# Windows
+Thumbs.db
+desktop.ini
