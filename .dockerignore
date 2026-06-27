@@ -1,0 +1,14 @@
+# Entorno virtual — Docker instala las dependencias solo con requirements.txt
+venvPE/
+
+# Variables de entorno — nunca deben ir dentro de una imagen
+.env
+
+# Caché de Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Git
+.git/
+.gitignore

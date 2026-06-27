@@ -70,15 +70,60 @@ Inválido: 12345678-5   ✗  (dígito verificador incorrecto)
 - Python 3.14
 - Django 5.0.6
 - Django REST Framework 3.15.2
-- MySQL
+- MySQL 8.0
 - PyMySQL (conector de base de datos)
-
-## Requisitos previos
-
-- Python 3.10 o superior
-- MySQL 8.0 o superior con el servicio activo
+- Docker y Docker Compose
 
 ## Instalación y ejecución
+
+### Con Docker (recomendado)
+
+Requiere tener [Docker Desktop](https://www.docker.com/products/docker-desktop/) instalado.
+
+**1. Configurar el archivo `.env`**
+```
+SECRET_KEY=django-insecure-...
+DB_PASSWORD=1234
+DB_HOST=db
+```
+
+**2. Levantar los contenedores**
+```bash
+docker compose up
+```
+
+La aplicación queda disponible en `http://127.0.0.1:8000`. Las migraciones se aplican automáticamente.
+
+Para detener: `Ctrl+C` y luego `docker compose down`.
+
+---
+
+### Sin Docker (instalación manual)
+
+**Requisitos previos:** Python 3.10 o superior · MySQL 8.0 o superior
+
+**1. Crear y activar el entorno virtual**
+```powershell
+python -m venv venvPE
+.\venvPE\Scripts\Activate.ps1
+```
+
+**2. Instalar dependencias**
+```powershell
+pip install -r requirements.txt
+```
+
+**3. Crear la base de datos en MySQL**
+```sql
+CREATE DATABASE prestamos_empleados CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
+
+**4. Configurar el archivo `.env`**
+```
+SECRET_KEY=django-insecure-...
+DB_PASSWORD=1234
+DB_HOST=localhost
+```
 
 **1. Crear y activar el entorno virtual**
 ```powershell
@@ -96,29 +141,17 @@ pip install django==5.0.6 djangorestframework==3.15.2 PyMySQL python-dotenv
 CREATE DATABASE prestamos_empleados CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
-**4. Aplicar las migraciones**
+**5. Aplicar las migraciones**
 ```powershell
 python manage.py migrate
 ```
 
-**5. Iniciar el servidor**
+**6. Iniciar el servidor**
 ```powershell
 python manage.py runserver
 ```
 
 La aplicación queda disponible en `http://127.0.0.1:8000`.
-
-## Configuración de la base de datos
-
-Las credenciales de conexión se definen en un archivo `.env` en la raíz del proyecto:
-
-```
-DB_NAME=prestamos_empleados
-DB_USER=root
-DB_PASSWORD=1234
-DB_HOST=localhost
-DB_PORT=3306
-```
 
 ## Estructura del proyecto
 
