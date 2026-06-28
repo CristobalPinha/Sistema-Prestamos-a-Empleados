@@ -1,0 +1,25 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}
+    {% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | LendIn Admin
+{% endblock %}
+
+{% block branding %}
+<h1 id="site-name">
+    <a href="{% url 'admin:index' %}">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" style="vertical-align:middle;margin-right:8px;margin-bottom:2px">
+            <rect x="2" y="2" width="9" height="9" rx="2" fill="#3B82F6"/>
+            <rect x="13" y="2" width="9" height="9" rx="2" fill="#3B82F6" opacity=".5"/>
+            <rect x="2" y="13" width="9" height="9" rx="2" fill="#3B82F6" opacity=".5"/>
+            <rect x="13" y="13" width="9" height="9" rx="2" fill="#3B82F6"/>
+        </svg>
+        LendIn
+    </a>
+</h1>
+{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'myapp/css/admin.css' %}">
+{% endblock %}

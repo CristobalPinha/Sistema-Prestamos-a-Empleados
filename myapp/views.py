@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.utils import timezone
 from django.db.models import Sum
 from django.http import HttpResponse
@@ -16,6 +18,7 @@ from .serializers import EmpleadoSerializer, PrestamoSerializer, CuotaSerializer
 from .services import generar_cuotas
 
 
+@login_required
 def dashboard(request):
     total_empleados    = Empleado.objects.count()
     total_prestamos    = Prestamo.objects.filter(estado=Prestamo.APROBADO).count()
@@ -38,11 +41,15 @@ def dashboard(request):
     })
 
 
+@login_required
 def employee_list(request):
-    empleados = Empleado.objects.all()
+    qs = Empleado.objects.all().order_by('apellido_empleado', 'nombre_empleado')
+    paginator = Paginator(qs, 10)
+    empleados = paginator.get_page(request.GET.get('page'))
     return render(request, 'employee_list.html', {'empleados': empleados})
 
 
+@login_required
 def employee_create(request):
     if request.method == 'POST':
         form = EmpleadoForm(request.POST)
@@ -54,6 +61,7 @@ def employee_create(request):
     return render(request, 'employee_create.html', {'form': form})
 
 
+@login_required
 def employee_update(request, RUT_empleado):
     empleado = get_object_or_404(Empleado, RUT_empleado=RUT_empleado)
     if request.method == 'POST':
@@ -66,17 +74,22 @@ def employee_update(request, RUT_empleado):
     return render(request, 'employee_update.html', {'form': form})
 
 
+@login_required
 def employee_delete(request, RUT_empleado):
     empleado = get_object_or_404(Empleado, RUT_empleado=RUT_empleado)
     empleado.delete()
     return redirect('employee_list')
 
 
+@login_required
 def loan_list(request):
-    prestamos = Prestamo.objects.all()
+    qs = Prestamo.objects.all().order_by('-id_prestamo')
+    paginator = Paginator(qs, 10)
+    prestamos = paginator.get_page(request.GET.get('page'))
     return render(request, 'loan_list.html', {'prestamos': prestamos})
 
 
+@login_required
 def loan_create(request):
     if request.method == 'POST':
         form = PrestamoForm(request.POST)
@@ -88,17 +101,20 @@ def loan_create(request):
     return render(request, 'loan_create.html', {'form': form})
 
 
+@login_required
 def loan_detail(request, id_prestamo):
     prestamo = get_object_or_404(Prestamo, id_prestamo=id_prestamo)
     cuotas = prestamo.cuotas.all()
     return render(request, 'loan_detail.html', {'prestamo': prestamo, 'cuotas': cuotas})
 
 
+@login_required
 def loan_approvals(request):
     pendientes = Prestamo.objects.filter(estado=Prestamo.PENDIENTE)
     return render(request, 'loan_approvals.html', {'pendientes': pendientes})
 
 
+@login_required
 def loan_approve(request, id_prestamo):
     prestamo = get_object_or_404(Prestamo, id_prestamo=id_prestamo)
     if prestamo.estado == Prestamo.PENDIENTE:
@@ -108,6 +124,7 @@ def loan_approve(request, id_prestamo):
     return redirect('loan_approvals')
 
 
+@login_required
 def loan_reject(request, id_prestamo):
     prestamo = get_object_or_404(Prestamo, id_prestamo=id_prestamo)
     if prestamo.estado == Prestamo.PENDIENTE:
@@ -116,6 +133,7 @@ def loan_reject(request, id_prestamo):
     return redirect('loan_approvals')
 
 
+@login_required
 def cuota_pagar(request, id_cuota):
     cuota = get_object_or_404(Cuota, id_cuota=id_cuota)
     if not cuota.cuota_fecha_pago:
@@ -124,6 +142,7 @@ def cuota_pagar(request, id_cuota):
     return redirect('loan_detail', id_prestamo=cuota.Prestamo.id_prestamo)
 
 
+@login_required
 def loan_delete(request, id_prestamo):
     prestamo = get_object_or_404(Prestamo, id_prestamo=id_prestamo)
     prestamo.delete()
@@ -164,6 +183,7 @@ class ComunaViewSet(viewsets.ModelViewSet):
 
 # ─── Exportación ─────────────────────────────────────────────────────────────
 
+@login_required
 def export_excel(request, id_prestamo):
     prestamo = get_object_or_404(Prestamo, id_prestamo=id_prestamo)
     cuotas = prestamo.cuotas.all()
@@ -192,6 +212,7 @@ def export_excel(request, id_prestamo):
     return response
 
 
+@login_required
 def export_pdf(request, id_prestamo):
     prestamo = get_object_or_404(Prestamo, id_prestamo=id_prestamo)
     cuotas = prestamo.cuotas.all()

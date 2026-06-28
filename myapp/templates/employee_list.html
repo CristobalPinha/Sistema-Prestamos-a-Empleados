@@ -10,7 +10,7 @@
 <div class="card">
     <div class="card-header">
         <span class="card-title">Todos los Empleados</span>
-        <span class="text-muted text-sm">{{ empleados|length }} registrados</span>
+        <span class="text-muted text-sm">{{ empleados.paginator.count }} registrados</span>
     </div>
     <div class="table-wrapper">
         <table>
@@ -54,5 +54,22 @@
             </tbody>
         </table>
     </div>
+    {% if empleados.paginator.num_pages > 1 %}
+    <div class="pagination">
+        <span class="pagination-info">
+            Página {{ empleados.number }} de {{ empleados.paginator.num_pages }}
+        </span>
+        <div class="pagination-controls">
+            {% if empleados.has_previous %}
+                <a href="?page=1" class="pagination-btn">«</a>
+                <a href="?page={{ empleados.previous_page_number }}" class="pagination-btn">‹ Anterior</a>
+            {% endif %}
+            {% if empleados.has_next %}
+                <a href="?page={{ empleados.next_page_number }}" class="pagination-btn">Siguiente ›</a>
+                <a href="?page={{ empleados.paginator.num_pages }}" class="pagination-btn">»</a>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}

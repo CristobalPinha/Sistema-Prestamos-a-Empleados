@@ -10,7 +10,7 @@
 <div class="card">
     <div class="card-header">
         <span class="card-title">Todos los Préstamos</span>
-        <span class="text-muted text-sm">{{ prestamos|length }} registrados</span>
+        <span class="text-muted text-sm">{{ prestamos.paginator.count }} registrados</span>
     </div>
     <div class="table-wrapper">
         <table>
@@ -69,5 +69,22 @@
             </tbody>
         </table>
     </div>
+    {% if prestamos.paginator.num_pages > 1 %}
+    <div class="pagination">
+        <span class="pagination-info">
+            Página {{ prestamos.number }} de {{ prestamos.paginator.num_pages }}
+        </span>
+        <div class="pagination-controls">
+            {% if prestamos.has_previous %}
+                <a href="?page=1" class="pagination-btn">«</a>
+                <a href="?page={{ prestamos.previous_page_number }}" class="pagination-btn">‹ Anterior</a>
+            {% endif %}
+            {% if prestamos.has_next %}
+                <a href="?page={{ prestamos.next_page_number }}" class="pagination-btn">Siguiente ›</a>
+                <a href="?page={{ prestamos.paginator.num_pages }}" class="pagination-btn">»</a>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}
