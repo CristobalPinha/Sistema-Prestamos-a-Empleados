@@ -2,11 +2,23 @@
 
 > Plataforma web para gestionar préstamos otorgados a empleados de una organización. Incluye panel administrativo con dashboard, flujo de aprobación, seguimiento de cuotas y API REST.
 
-![Python](https://img.shields.io/badge/Python-3.14-3776AB?style=flat-square&logo=python&logoColor=white)
-![Django](https://img.shields.io/badge/Django-5.0.6-092E20?style=flat-square&logo=django&logoColor=white)
-![DRF](https://img.shields.io/badge/Django_REST_Framework-3.15.2-red?style=flat-square)
-![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?style=flat-square&logo=mysql&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?style=flat-square&logo=docker&logoColor=white)
+[![Python](https://img.shields.io/badge/Python-3.14-blue.svg)](https://python.org)
+[![Django](https://img.shields.io/badge/Django-5.0.6-green.svg)](https://djangoproject.com)
+[![DRF](https://img.shields.io/badge/DRF-3.15.2-red.svg)](https://www.django-rest-framework.org)
+[![MySQL](https://img.shields.io/badge/MySQL-8.0-orange.svg)](https://mysql.com)
+[![Docker](https://img.shields.io/badge/Docker-Compose-blue.svg)](https://docs.docker.com/compose/)
+[![Tests](https://img.shields.io/badge/Tests-26_passing-success.svg)]()
+[![Status](https://img.shields.io/badge/Status-Complete-success.svg)]()
+
+---
+
+## Índice
+
+- [Funcionalidades](#funcionalidades)
+- [API REST](#api-rest)
+- [Tests](#tests)
+- [Instalación](#instalación)
+- [Estructura del proyecto](#estructura-del-proyecto)
 
 ---
 
