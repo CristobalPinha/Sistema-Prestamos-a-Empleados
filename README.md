@@ -23,6 +23,20 @@ Plataforma web para gestionar préstamos otorgados a empleados de una organizaci
 - Registro de fecha de pago por cuota
 - Exportar detalle a Excel o PDF
 
+**Autenticación**
+- Acceso restringido a personal autorizado
+- Login con diseño LendIn, logout desde el sidebar
+- Usuarios gestionados desde `/admin/` o `createsuperuser`
+
+**Búsqueda y filtros**
+- Empleados: búsqueda en tiempo real por nombre, apellido o RUT
+- Préstamos: filtro por estado (Pendiente / Aprobado / Rechazado)
+- Paginación de 10 registros por página en ambas listas
+
+**Panel de administración**
+- `/admin/` con diseño personalizado en colores LendIn
+- Gestión de usuarios, empleados, préstamos, cuotas, tipos y comunas
+
 **API REST**
 - Endpoints completos bajo `/api/` para todos los modelos
 - Interfaz navegable de Django REST Framework

@@ -12,6 +12,7 @@ from reportlab.lib.styles import getSampleStyleSheet
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from django.db import models as django_models
 from .models import Empleado, Prestamo, Cuota, TipoPrestamo, Comuna
 from .forms import EmpleadoForm, PrestamoForm
 from .serializers import EmpleadoSerializer, PrestamoSerializer, CuotaSerializer, TipoPrestamoSerializer, ComunaSerializer
@@ -43,10 +44,17 @@ def dashboard(request):
 
 @login_required
 def employee_list(request):
+    q = request.GET.get('q', '').strip()
     qs = Empleado.objects.all().order_by('apellido_empleado', 'nombre_empleado')
+    if q:
+        qs = qs.filter(
+            django_models.Q(nombre_empleado__icontains=q) |
+            django_models.Q(apellido_empleado__icontains=q) |
+            django_models.Q(RUT_empleado__icontains=q)
+        )
     paginator = Paginator(qs, 10)
     empleados = paginator.get_page(request.GET.get('page'))
-    return render(request, 'employee_list.html', {'empleados': empleados})
+    return render(request, 'employee_list.html', {'empleados': empleados, 'q': q})
 
 
 @login_required
@@ -83,10 +91,13 @@ def employee_delete(request, RUT_empleado):
 
 @login_required
 def loan_list(request):
+    estado = request.GET.get('estado', '').strip()
     qs = Prestamo.objects.all().order_by('-id_prestamo')
+    if estado:
+        qs = qs.filter(estado=estado)
     paginator = Paginator(qs, 10)
     prestamos = paginator.get_page(request.GET.get('page'))
-    return render(request, 'loan_list.html', {'prestamos': prestamos})
+    return render(request, 'loan_list.html', {'prestamos': prestamos, 'estado': estado})
 
 
 @login_required

@@ -7,9 +7,23 @@
 {% endblock %}
 
 {% block content %}
+<form method="get" class="search-bar mb-4">
+    <div class="filter-tabs">
+        <a href="{% url 'loan_list' %}" class="filter-tab {% if not estado %}active{% endif %}">Todos</a>
+        <a href="?estado=pendiente" class="filter-tab {% if estado == 'pendiente' %}active{% endif %}">Pendientes</a>
+        <a href="?estado=aprobado"  class="filter-tab {% if estado == 'aprobado'  %}active{% endif %}">Aprobados</a>
+        <a href="?estado=rechazado" class="filter-tab {% if estado == 'rechazado' %}active{% endif %}">Rechazados</a>
+    </div>
+</form>
+
 <div class="card">
     <div class="card-header">
-        <span class="card-title">Todos los Préstamos</span>
+        <span class="card-title">
+            {% if estado == 'pendiente' %}Préstamos Pendientes
+            {% elif estado == 'aprobado' %}Préstamos Aprobados
+            {% elif estado == 'rechazado' %}Préstamos Rechazados
+            {% else %}Todos los Préstamos{% endif %}
+        </span>
         <span class="text-muted text-sm">{{ prestamos.paginator.count }} registrados</span>
     </div>
     <div class="table-wrapper">

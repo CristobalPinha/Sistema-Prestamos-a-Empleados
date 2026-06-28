@@ -444,6 +444,77 @@ ul.errorlist {
 
 .empty-state p { margin-top: 8px; font-size: 13px; }
 
+/* ── Search bar ─────────────────────────────────────────────────────────── */
+.search-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.search-input-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0 12px;
+    flex: 1;
+    max-width: 420px;
+    transition: border-color .15s, box-shadow .15s;
+}
+
+.search-input-wrap:focus-within {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(59,130,246,.12);
+}
+
+.search-input {
+    border: none !important;
+    box-shadow: none !important;
+    padding: 8px 0 !important;
+    font-size: 13.5px !important;
+    background: transparent !important;
+    flex: 1;
+}
+
+.search-input:focus {
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* ── Filter tabs ────────────────────────────────────────────────────────── */
+.filter-tabs {
+    display: flex;
+    gap: 4px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 4px;
+    width: fit-content;
+}
+
+.filter-tab {
+    padding: 6px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    transition: background .15s, color .15s;
+    white-space: nowrap;
+}
+
+.filter-tab:hover {
+    background: var(--bg);
+    color: var(--text);
+}
+
+.filter-tab.active {
+    background: var(--accent);
+    color: #fff;
+}
+
 /* ── Pagination ─────────────────────────────────────────────────────────── */
 .pagination {
     display: flex;
