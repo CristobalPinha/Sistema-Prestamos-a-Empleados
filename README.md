@@ -28,18 +28,22 @@
 
 **Login y dashboard**
 Acceso restringido con redirección automática al intentar entrar sin sesión.
+
 ![Login](content/login.gif)
 
 **Gestión de empleados**
 Registro con validación de RUT chileno y búsqueda en tiempo real.
+
 ![Empleados](content/empleados.gif)
 
 **Flujo de préstamos**
 Solicitud → aprobación → generación automática de cuotas.
+
 ![Préstamos](content/prestamos.gif)
 
 **API REST**
 Endpoints navegables con Django REST Framework.
+
 ![API](content/api.gif)
 
 ---
