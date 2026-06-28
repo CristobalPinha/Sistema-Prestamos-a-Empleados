@@ -12,6 +12,8 @@ jobs:
         env:
           MYSQL_DATABASE: lendin_test
           MYSQL_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
         options: >-
           --health-cmd="mysqladmin ping"
           --health-interval=10s
@@ -33,6 +35,7 @@ jobs:
         env:
           DB_ENGINE: django.db.backends.mysql
           DB_HOST: 127.0.0.1
+          DB_PORT: 3306
           DB_USER: root
           DB_PASSWORD: root
           DB_NAME: lendin_test
