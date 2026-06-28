@@ -33,6 +33,7 @@ jobs:
 
       - name: Run tests with coverage
         env:
+          SECRET_KEY: django-insecure-ci-clave-de-prueba-no-usar-en-produccion
           DB_ENGINE: django.db.backends.mysql
           DB_HOST: 127.0.0.1
           DB_PORT: 3306
