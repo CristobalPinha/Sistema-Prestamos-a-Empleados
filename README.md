@@ -12,61 +12,33 @@
 
 ---
 
-## Diagrama de base de datos
+## Demo
 
-```mermaid
-classDiagram
-    direction LR
+**Login y dashboard**
+Acceso restringido con redirección automática al intentar entrar sin sesión.
+![Login](content/login.gif)
 
-    class Comuna {
-        +int id_comuna
-        +string nombre_comuna
-    }
+**Gestión de empleados**
+Registro con validación de RUT chileno y búsqueda en tiempo real.
+![Empleados](content/empleados.gif)
 
-    class Empleado {
-        +string RUT_empleado
-        +string nombre_empleado
-        +string apellido_empleado
-        +string direccion_empleado
-    }
+**Flujo de préstamos**
+Solicitud → aprobación → generación automática de cuotas.
+![Préstamos](content/prestamos.gif)
 
-    class TipoPrestamo {
-        +int id_tipo_prestamo
-        +string tipo_prestamo
-        +int tasa_de_interes
-    }
-
-    class Prestamo {
-        +int id_prestamo
-        +int monto_prestamo
-        +int monto_pagar
-        +int cantidad_cuotas
-        +string estado
-    }
-
-    class Cuota {
-        +int id_cuota
-        +int numero_cuota
-        +int monto_cuota
-        +datetime fecha_vencimiento
-        +datetime fecha_pago
-    }
-
-    Comuna "1" --> "N" Empleado : tiene
-    Empleado "1" --> "N" Prestamo : solicita
-    TipoPrestamo "1" --> "N" Prestamo : clasifica
-    Prestamo "1" --> "N" Cuota : genera
-```
+**API REST**
+Endpoints navegables con Django REST Framework.
+![API](content/api.gif)
 
 ---
 
 ## Índice
 
-- [Diagrama de base de datos](#diagrama-de-base-de-datos)
 - [Funcionalidades](#funcionalidades)
 - [API REST](#api-rest)
 - [Tests](#tests)
 - [Instalación](#instalación)
+- [Base de datos](#base-de-datos)
 - [Estructura del proyecto](#estructura-del-proyecto)
 
 ---
@@ -170,6 +142,54 @@ pip install -r requirements.txt
 python manage.py migrate
 python manage.py createsuperuser
 python manage.py runserver
+```
+
+---
+
+## Base de datos
+
+```mermaid
+classDiagram
+    direction LR
+
+    class Comuna {
+        +int id_comuna
+        +string nombre_comuna
+    }
+
+    class Empleado {
+        +string RUT_empleado
+        +string nombre_empleado
+        +string apellido_empleado
+        +string direccion_empleado
+    }
+
+    class TipoPrestamo {
+        +int id_tipo_prestamo
+        +string tipo_prestamo
+        +int tasa_de_interes
+    }
+
+    class Prestamo {
+        +int id_prestamo
+        +int monto_prestamo
+        +int monto_pagar
+        +int cantidad_cuotas
+        +string estado
+    }
+
+    class Cuota {
+        +int id_cuota
+        +int numero_cuota
+        +int monto_cuota
+        +datetime fecha_vencimiento
+        +datetime fecha_pago
+    }
+
+    Comuna "1" --> "N" Empleado : tiene
+    Empleado "1" --> "N" Prestamo : solicita
+    TipoPrestamo "1" --> "N" Prestamo : clasifica
+    Prestamo "1" --> "N" Cuota : genera
 ```
 
 ---
