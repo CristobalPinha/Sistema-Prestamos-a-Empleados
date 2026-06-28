@@ -12,6 +12,18 @@
 
 ---
 
+## Índice
+
+- [Demo](#demo)
+- [Funcionalidades](#funcionalidades)
+- [API REST](#api-rest)
+- [Tests](#tests)
+- [Instalación](#instalación)
+- [Base de datos](#base-de-datos)
+- [Estructura del proyecto](#estructura-del-proyecto)
+
+---
+
 ## Demo
 
 **Login y dashboard**
@@ -29,17 +41,6 @@ Solicitud → aprobación → generación automática de cuotas.
 **API REST**
 Endpoints navegables con Django REST Framework.
 ![API](content/api.gif)
-
----
-
-## Índice
-
-- [Funcionalidades](#funcionalidades)
-- [API REST](#api-rest)
-- [Tests](#tests)
-- [Instalación](#instalación)
-- [Base de datos](#base-de-datos)
-- [Estructura del proyecto](#estructura-del-proyecto)
 
 ---
 
@@ -61,17 +62,17 @@ Endpoints navegables con Django REST Framework.
 
 | Método | Endpoint | Descripción |
 |--------|----------|-------------|
-| `GET` | `/api/empleados/` | Lista todos los empleados |
-| `GET` `PUT` `DELETE` | `/api/empleados/{rut}/` | Detalle, editar o eliminar |
-| `POST` | `/api/empleados/` | Crear empleado |
-| `GET` | `/api/prestamos/` | Lista todos los préstamos |
-| `GET` `DELETE` | `/api/prestamos/{id}/` | Detalle con cuotas o eliminar |
-| `POST` | `/api/prestamos/` | Crear préstamo |
-| `GET` | `/api/prestamos/{id}/cuotas/` | Cuotas de un préstamo |
-| `GET` | `/api/tipos-prestamo/` | Lista tipos de préstamo |
-| `GET` | `/api/comunas/` | Lista comunas |
+| \`GET\` | \`/api/empleados/\` | Lista todos los empleados |
+| \`GET\` \`PUT\` \`DELETE\` | \`/api/empleados/{rut}/\` | Detalle, editar o eliminar |
+| \`POST\` | \`/api/empleados/\` | Crear empleado |
+| \`GET\` | \`/api/prestamos/\` | Lista todos los préstamos |
+| \`GET\` \`DELETE\` | \`/api/prestamos/{id}/\` | Detalle con cuotas o eliminar |
+| \`POST\` | \`/api/prestamos/\` | Crear préstamo |
+| \`GET\` | \`/api/prestamos/{id}/cuotas/\` | Cuotas de un préstamo |
+| \`GET\` | \`/api/tipos-prestamo/\` | Lista tipos de préstamo |
+| \`GET\` | \`/api/comunas/\` | Lista comunas |
 
-Interfaz navegable en `http://127.0.0.1:8000/api/`
+Interfaz navegable en \`http://127.0.0.1:8000/api/\`
 
 ---
 
@@ -79,25 +80,25 @@ Interfaz navegable en `http://127.0.0.1:8000/api/`
 
 26 tests automatizados organizados en 6 grupos.
 
-```bash
+\`\`\`bash
 python manage.py test myapp --verbosity=2
-```
+\`\`\`
 
 | Grupo | Tests | Qué verifica |
 |-------|:-----:|--------------|
-| `ValidarRutTest` | 8 | Formato y dígito verificador del RUT |
-| `EstadoCuotaTest` | 3 | Estados Pagada / Vencida / Al día |
-| `PrestamoCalculoTest` | 3 | Cálculo del monto total con interés |
-| `GenerarCuotasTest` | 5 | Cantidad, montos, fechas y numeración |
-| `EmpleadoAPITest` | 4 | Endpoints de empleados |
-| `PrestamoAPITest` | 3 | Endpoints de préstamos y cuotas |
+| \`ValidarRutTest\` | 8 | Formato y dígito verificador del RUT |
+| \`EstadoCuotaTest\` | 3 | Estados Pagada / Vencida / Al día |
+| \`PrestamoCalculoTest\` | 3 | Cálculo del monto total con interés |
+| \`GenerarCuotasTest\` | 5 | Cantidad, montos, fechas y numeración |
+| \`EmpleadoAPITest\` | 4 | Endpoints de empleados |
+| \`PrestamoAPITest\` | 3 | Endpoints de préstamos y cuotas |
 
-**Validación de RUT** — acepta con o sin puntos, normaliza `k` a `K`:
+**Validación de RUT** — acepta con o sin puntos, normaliza \`k\` a \`K\`:
 
-```
+\`\`\`
 Válido:   12345678-9      Válido:   12.345.678-9      Válido:   19654321-K
 Inválido: 123456789       Inválido: 12345678-X         Inválido: 12345678-5
-```
+\`\`\`
 
 ---
 
@@ -107,7 +108,7 @@ Inválido: 123456789       Inválido: 12345678-X         Inválido: 12345678-5
 
 Requiere [Docker Desktop](https://www.docker.com/products/docker-desktop/).
 
-```bash
+\`\`\`bash
 # 1. Configurar variables de entorno
 cp .env.example .env   # editar SECRET_KEY y DB_PASSWORD
 
@@ -116,15 +117,15 @@ docker compose up
 
 # 3. Apagar
 docker compose down
-```
+\`\`\`
 
-La app queda en `http://127.0.0.1:8000`. Migraciones y datos iniciales se aplican automáticamente.
+La app queda en \`http://127.0.0.1:8000\`. Migraciones y datos iniciales se aplican automáticamente.
 
 ### Sin Docker
 
 **Requisitos:** Python 3.10+ · MySQL 8.0+
 
-```powershell
+\`\`\`powershell
 # Entorno virtual
 python -m venv venvPE
 .\venvPE\Scripts\Activate.ps1
@@ -142,13 +143,13 @@ pip install -r requirements.txt
 python manage.py migrate
 python manage.py createsuperuser
 python manage.py runserver
-```
+\`\`\`
 
 ---
 
 ## Base de datos
 
-```mermaid
+\`\`\`mermaid
 classDiagram
     direction LR
 
@@ -190,13 +191,13 @@ classDiagram
     Empleado "1" --> "N" Prestamo : solicita
     TipoPrestamo "1" --> "N" Prestamo : clasifica
     Prestamo "1" --> "N" Cuota : genera
-```
+\`\`\`
 
 ---
 
 ## Estructura del proyecto
 
-```
+\`\`\`
 LendIn/
 ├── Dockerfile
 ├── docker-compose.yml
@@ -219,4 +220,4 @@ LendIn/
     └── static/myapp/css/
         ├── styles.css         # Diseño principal
         └── admin.css          # Estilos del panel admin
-```
+\`\`\`
