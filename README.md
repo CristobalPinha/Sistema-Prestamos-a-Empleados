@@ -12,8 +12,60 @@
 
 ---
 
+## Diagrama de base de datos
+
+```mermaid
+erDiagram
+    COMUNA {
+        int id_comuna PK
+        varchar nombre_comuna
+    }
+
+    EMPLEADO {
+        varchar RUT_empleado PK
+        varchar nombre_empleado
+        varchar apellido_empleado
+        varchar direccion_empleado
+        int id_comuna FK
+    }
+
+    TIPO_PRESTAMO {
+        int id_tipo_prestamo PK
+        varchar tipo_prestamo
+        int tasa_de_interes
+    }
+
+    PRESTAMO {
+        int id_prestamo PK
+        int monto_prestamo
+        int monto_pagar
+        int cantidad_cuotas
+        varchar estado
+        varchar RUT_empleado FK
+        int id_tipo_prestamo FK
+    }
+
+    CUOTA {
+        int id_cuota PK
+        int numero_cuota
+        int monto_cuota
+        datetime cuota_fecha_emision
+        datetime cuota_fecha_vencimiento
+        datetime cuota_fecha_pago
+        int id_prestamo FK
+    }
+
+    COMUNA ||--o{ EMPLEADO : "tiene"
+    EMPLEADO ||--o{ PRESTAMO : "solicita"
+    TIPO_PRESTAMO ||--o{ PRESTAMO : "clasifica"
+    PRESTAMO ||--o{ CUOTA : "genera"
+```
+
+---
+
 ## Índice
 
+- [Diagrama de base de datos](#diagrama-de-base-de-datos)
 - [Funcionalidades](#funcionalidades)
 - [API REST](#api-rest)
 - [Tests](#tests)
