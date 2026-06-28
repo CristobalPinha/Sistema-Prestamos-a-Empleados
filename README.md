@@ -113,13 +113,13 @@ Inválido: 123456789       Inválido: 12345678-X         Inválido: 12345678-5
 Requiere [Docker Desktop](https://www.docker.com/products/docker-desktop/).
 
 \`\`\`bash
-# 1. Configurar variables de entorno
+## 1. Configurar variables de entorno
 cp .env.example .env   # editar SECRET_KEY y DB_PASSWORD
 
-# 2. Levantar
+## 2. Levantar
 docker compose up
 
-# 3. Apagar
+## 3. Apagar
 docker compose down
 \`\`\`
 
@@ -130,20 +130,20 @@ La app queda en \`http://127.0.0.1:8000\`. Migraciones y datos iniciales se apli
 **Requisitos:** Python 3.10+ · MySQL 8.0+
 
 \`\`\`powershell
-# Entorno virtual
+## Entorno virtual
 python -m venv venvPE
 .\venvPE\Scripts\Activate.ps1
 
-# Dependencias
+## Dependencias
 pip install -r requirements.txt
 
-# Base de datos
-# Crear en MySQL: prestamos_empleados (utf8mb4)
+## Base de datos
+## Crear en MySQL: prestamos_empleados (utf8mb4)
 
-# Variables de entorno
-# SECRET_KEY, DB_PASSWORD, DB_HOST=localhost
+## Variables de entorno
+## SECRET_KEY, DB_PASSWORD, DB_HOST=localhost
 
-# Migraciones y servidor
+## Migraciones y servidor
 python manage.py migrate
 python manage.py createsuperuser
 python manage.py runserver
