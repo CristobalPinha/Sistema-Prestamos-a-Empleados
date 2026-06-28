@@ -1,12 +1,54 @@
 {% extends 'base.html' %}
 
-{% block title %}Actualizar Empleado{% endblock %}
+{% block title %}Editar Empleado{% endblock %}
+{% block page_title %}Editar Empleado{% endblock %}
+{% block topbar_actions %}
+    <a href="{% url 'employee_list' %}" class="btn btn-ghost btn-sm">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        Volver
+    </a>
+{% endblock %}
 
 {% block content %}
-<h1>Actualizar Empleado</h1>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Actualizar</button>
-</form>
+<div class="card" style="max-width:680px">
+    <div class="card-header">
+        <span class="card-title">Actualizar Datos</span>
+    </div>
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>RUT</label>
+                    {{ form.RUT_empleado }}
+                    {{ form.RUT_empleado.errors }}
+                </div>
+                <div class="form-group">
+                    <label>Comuna</label>
+                    {{ form.Comuna }}
+                    {{ form.Comuna.errors }}
+                </div>
+                <div class="form-group">
+                    <label>Nombre</label>
+                    {{ form.nombre_empleado }}
+                    {{ form.nombre_empleado.errors }}
+                </div>
+                <div class="form-group">
+                    <label>Apellido</label>
+                    {{ form.apellido_empleado }}
+                    {{ form.apellido_empleado.errors }}
+                </div>
+                <div class="form-group full">
+                    <label>Dirección</label>
+                    {{ form.direccion_empleado }}
+                    {{ form.direccion_empleado.errors }}
+                </div>
+            </div>
+            <div class="form-actions mt-4">
+                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                <a href="{% url 'employee_list' %}" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
 {% endblock %}

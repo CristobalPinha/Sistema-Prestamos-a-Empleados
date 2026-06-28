@@ -1,21 +1,73 @@
 {% extends 'base.html' %}
 
-{% block title %}Listado de Prestamos{% endblock %}
+{% block title %}Préstamos{% endblock %}
+{% block page_title %}Gestión de Préstamos{% endblock %}
+{% block topbar_actions %}
+    <a href="{% url 'loan_create' %}" class="btn btn-primary btn-sm">+ Nueva Solicitud</a>
+{% endblock %}
 
 {% block content %}
-<h1>Listado de Prestamos</h1>
-{% for prestamo in prestamos %}
-    {% ifchanged prestamo.Empleado.nombre_empleado %}
-        <h2>{{ prestamo.Empleado.nombre_empleado }} {{ prestamo.Empleado.apellido_empleado }}</h2>
-    {% endifchanged %}
-    <p>Tipo: {{ prestamo.TipoPrestamo.tipo_prestamo }}</p>
-    <p>Monto prestado: {{ prestamo.monto_prestamo }}</p>
-    <p>Monto a pagar: {{ prestamo.monto_pagar }}</p>
-    <p>Cuotas: {{ prestamo.cantidad_cuotas }}</p>
-    <a href="{% url 'loan_detail' id_prestamo=prestamo.id_prestamo %}">Ver detalle</a>
-    <a href="{% url 'loan_delete' id_prestamo=prestamo.id_prestamo %}">Eliminar</a>
-    <hr>
-{% empty %}
-    <p>No hay prestamos registrados.</p>
-{% endfor %}
+<div class="card">
+    <div class="card-header">
+        <span class="card-title">Todos los Préstamos</span>
+        <span class="text-muted text-sm">{{ prestamos|length }} registrados</span>
+    </div>
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Empleado</th>
+                    <th>Tipo</th>
+                    <th>Monto</th>
+                    <th>Total a Pagar</th>
+                    <th>Cuotas</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for prestamo in prestamos %}
+                <tr>
+                    <td class="td-muted">{{ prestamo.id_prestamo }}</td>
+                    <td><strong>{{ prestamo.Empleado }}</strong></td>
+                    <td>{{ prestamo.TipoPrestamo }}</td>
+                    <td class="mono">${{ prestamo.monto_prestamo }}</td>
+                    <td class="mono">${{ prestamo.monto_pagar }}</td>
+                    <td>{{ prestamo.cantidad_cuotas }}</td>
+                    <td>
+                        {% if prestamo.estado == 'aprobado' %}
+                            <span class="status status-green">Aprobado</span>
+                        {% elif prestamo.estado == 'rechazado' %}
+                            <span class="status status-red">Rechazado</span>
+                        {% else %}
+                            <span class="status status-amber">Pendiente</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <div class="flex gap-2">
+                            {% if prestamo.estado == 'aprobado' %}
+                            <a href="{% url 'loan_detail' id_prestamo=prestamo.id_prestamo %}" class="btn btn-secondary btn-sm">Ver Cuotas</a>
+                            {% endif %}
+                            <a href="{% url 'loan_delete' id_prestamo=prestamo.id_prestamo %}" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar préstamo #{{ prestamo.id_prestamo }}?')">Eliminar</a>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="8">
+                        <div class="empty-state">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="7" width="20" height="14" rx="2"/>
+                                <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2M12 12v4M10 14h4"/>
+                            </svg>
+                            <p>No hay préstamos registrados.</p>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endblock %}

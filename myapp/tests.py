@@ -1,3 +1,4 @@
+from datetime import timedelta
 from django.test import TestCase
 from django.utils import timezone
 from django.forms import ValidationError
@@ -67,6 +68,44 @@ class ValidarRutTest(TestCase):
     def test_rut_con_dv_invalido(self):
         with self.assertRaises(ValidationError):
             validar_rut('11111111-X')
+
+
+# ─── Tests de estado de cuotas ───────────────────────────────────────────────
+
+class EstadoCuotaTest(TestCase):
+
+    def setUp(self):
+        self.prestamo = crear_prestamo(monto=100000, cuotas=1)
+
+    def test_estado_pagada(self):
+        cuota = Cuota.objects.create(
+            Prestamo=self.prestamo,
+            numero_cuota=1,
+            monto_cuota=110000,
+            cuota_fecha_vencimiento=timezone.now() - timedelta(days=10),
+            cuota_fecha_pago=timezone.now(),  # tiene fecha de pago → Pagada
+        )
+        self.assertEqual(cuota.estado, 'Pagada')
+
+    def test_estado_vencida(self):
+        cuota = Cuota.objects.create(
+            Prestamo=self.prestamo,
+            numero_cuota=1,
+            monto_cuota=110000,
+            cuota_fecha_vencimiento=timezone.now() - timedelta(days=10),  # venció hace 10 días
+            cuota_fecha_pago=None,
+        )
+        self.assertEqual(cuota.estado, 'Vencida')
+
+    def test_estado_al_dia(self):
+        cuota = Cuota.objects.create(
+            Prestamo=self.prestamo,
+            numero_cuota=1,
+            monto_cuota=110000,
+            cuota_fecha_vencimiento=timezone.now() + timedelta(days=20),  # vence en 20 días
+            cuota_fecha_pago=None,
+        )
+        self.assertEqual(cuota.estado, 'Al día')
 
 
 # ─── Tests de lógica del modelo Prestamo ─────────────────────────────────────

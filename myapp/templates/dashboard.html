@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+{% block topbar_actions %}
+    <a href="{% url 'loan_create' %}" class="btn btn-primary btn-sm">+ Nueva Solicitud</a>
+{% endblock %}
+
+{% block content %}
+
+<div class="kpi-grid">
+    <div class="kpi-card">
+        <span class="kpi-label">Solicitudes Pendientes</span>
+        <a href="{% url 'loan_approvals' %}" style="text-decoration:none">
+            <span class="kpi-value amber">{{ prestamos_pendientes }}</span>
+        </a>
+        <span class="kpi-sub">Requieren revisión</span>
+    </div>
+    <div class="kpi-card">
+        <span class="kpi-label">Cuotas Vencidas</span>
+        <span class="kpi-value red">{{ cuotas_vencidas }}</span>
+        <span class="kpi-sub">Sin pago registrado</span>
+    </div>
+    <div class="kpi-card">
+        <span class="kpi-label">Préstamos Activos</span>
+        <span class="kpi-value dark">{{ total_prestamos }}</span>
+        <span class="kpi-sub">Aprobados y vigentes</span>
+    </div>
+    <div class="kpi-card">
+        <span class="kpi-label">Total Capital Prestado</span>
+        <span class="kpi-value dark mono">${{ monto_total|floatformat:0 }}</span>
+        <span class="kpi-sub">{{ total_empleados }} empleados registrados</span>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <span class="card-title">Últimas Solicitudes en Espera de Aprobación</span>
+        <a href="{% url 'loan_approvals' %}" class="btn btn-ghost btn-sm">Ver todas</a>
+    </div>
+    <div class="table-wrapper">
+        {% if pendientes_recientes %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Empleado</th>
+                    <th>Tipo de Préstamo</th>
+                    <th>Monto Solicitado</th>
+                    <th>Plazo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for prestamo in pendientes_recientes %}
+                <tr>
+                    <td><strong>{{ prestamo.Empleado }}</strong></td>
+                    <td>{{ prestamo.TipoPrestamo }}</td>
+                    <td class="mono">${{ prestamo.monto_prestamo }}</td>
+                    <td>{{ prestamo.cantidad_cuotas }} cuotas</td>
+                    <td>
+                        <div class="flex gap-2">
+                            <form method="post" action="{% url 'loan_approve' prestamo.id_prestamo %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-success btn-sm">Aprobar</button>
+                            </form>
+                            <form method="post" action="{% url 'loan_reject' prestamo.id_prestamo %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-sm">Rechazar</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty-state">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-5"/>
+            </svg>
+            <p>No hay solicitudes pendientes de aprobación.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

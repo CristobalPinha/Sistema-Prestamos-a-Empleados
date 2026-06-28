@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}Solicitudes Pendientes{% endblock %}
+{% block page_title %}Solicitudes Pendientes de Aprobación{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <span class="card-title">Solicitudes en Espera</span>
+        <span class="text-muted text-sm">{{ pendientes|length }} pendiente(s)</span>
+    </div>
+    <div class="table-wrapper">
+        {% if pendientes %}
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Empleado</th>
+                    <th>Tipo de Préstamo</th>
+                    <th>Monto</th>
+                    <th>Total a Pagar</th>
+                    <th>Plazo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for prestamo in pendientes %}
+                <tr>
+                    <td class="td-muted">{{ prestamo.id_prestamo }}</td>
+                    <td><strong>{{ prestamo.Empleado }}</strong></td>
+                    <td>{{ prestamo.TipoPrestamo }}</td>
+                    <td class="mono">${{ prestamo.monto_prestamo }}</td>
+                    <td class="mono">${{ prestamo.monto_pagar }}</td>
+                    <td>{{ prestamo.cantidad_cuotas }} cuotas</td>
+                    <td>
+                        <div class="flex gap-2">
+                            <form method="post" action="{% url 'loan_approve' prestamo.id_prestamo %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-success btn-sm">✓ Aprobar</button>
+                            </form>
+                            <form method="post" action="{% url 'loan_reject' prestamo.id_prestamo %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-sm">✗ Rechazar</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty-state">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-5"/>
+            </svg>
+            <p>No hay solicitudes pendientes de aprobación.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

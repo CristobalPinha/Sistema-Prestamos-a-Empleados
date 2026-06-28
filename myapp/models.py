@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 # Crea tus modelos aqui
 
@@ -28,12 +29,22 @@ class TipoPrestamo(models.Model):
         return self.tipo_prestamo
 
 class Prestamo(models.Model):
+    PENDIENTE  = 'pendiente'
+    APROBADO   = 'aprobado'
+    RECHAZADO  = 'rechazado'
+    ESTADOS = [
+        (PENDIENTE, 'Pendiente'),
+        (APROBADO,  'Aprobado'),
+        (RECHAZADO, 'Rechazado'),
+    ]
+
     id_prestamo = models.AutoField(primary_key=True)
     monto_prestamo = models.IntegerField()
-    monto_pagar = models.IntegerField(blank=True, null=True)  # Para mostrar el monto total a pagar
-    Empleado = models.ForeignKey(Empleado, on_delete=models.CASCADE, to_field='RUT_empleado')  # La relación ya está correctamente definida
+    monto_pagar = models.IntegerField(blank=True, null=True)
+    Empleado = models.ForeignKey(Empleado, on_delete=models.CASCADE, to_field='RUT_empleado')
     TipoPrestamo = models.ForeignKey(TipoPrestamo, on_delete=models.CASCADE)
-    cantidad_cuotas = models.IntegerField()  # En plural
+    cantidad_cuotas = models.IntegerField()
+    estado = models.CharField(max_length=10, choices=ESTADOS, default=PENDIENTE)
 
     def save(self, *args, **kwargs):
         if not self.monto_pagar:  # Calcular solo si monto_pagar no está definido
@@ -50,6 +61,14 @@ class Cuota(models.Model):
     cuota_fecha_vencimiento = models.DateTimeField()
     cuota_fecha_pago = models.DateTimeField(null=True, blank=True)  # Puede ser nulo si no ha sido pagada aún
     
+    @property
+    def estado(self):
+        if self.cuota_fecha_pago:
+            return 'Pagada'
+        if timezone.now() > self.cuota_fecha_vencimiento:
+            return 'Vencida'
+        return 'Al día'
+
     def __str__(self):
         return f'Cuota {self.numero_cuota} - Préstamo {self.Prestamo.id_prestamo}'
 #============================================================================================================

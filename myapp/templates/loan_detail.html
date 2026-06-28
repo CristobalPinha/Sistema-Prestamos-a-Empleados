@@ -1,37 +1,98 @@
 {% extends 'base.html' %}
 
-{% block title %}Detalle del Prestamo{% endblock %}
+{% block title %}Préstamo #{{ prestamo.id_prestamo }}{% endblock %}
+{% block page_title %}Detalle del Préstamo{% endblock %}
+{% block topbar_actions %}
+    <a href="{% url 'export_excel' prestamo.id_prestamo %}" class="btn btn-secondary btn-sm">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Excel
+    </a>
+    <a href="{% url 'export_pdf' prestamo.id_prestamo %}" class="btn btn-secondary btn-sm">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        PDF
+    </a>
+    <a href="{% url 'loan_list' %}" class="btn btn-ghost btn-sm">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        Volver
+    </a>
+{% endblock %}
 
 {% block content %}
-<h1>Detalle del Prestamo</h1>
-<p>ID: {{ prestamo.id_prestamo }}</p>
-<p>Empleado: {{ prestamo.Empleado.nombre_empleado }} {{ prestamo.Empleado.apellido_empleado }}</p>
-<p>Tipo: {{ prestamo.TipoPrestamo.tipo_prestamo }}</p>
-<p>Monto prestado: {{ prestamo.monto_prestamo }}</p>
-<p>Monto a pagar: {{ prestamo.monto_pagar }}</p>
-<p>Cantidad de cuotas: {{ prestamo.cantidad_cuotas }}</p>
 
-<h2>Cuotas</h2>
-<table>
-    <thead>
-        <tr>
-            <th>N</th>
-            <th>Monto</th>
-            <th>Fecha emision</th>
-            <th>Fecha vencimiento</th>
-            <th>Fecha pago</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for cuota in cuotas %}
-        <tr>
-            <td>{{ cuota.numero_cuota }}</td>
-            <td>{{ cuota.monto_cuota }}</td>
-            <td>{{ cuota.cuota_fecha_emision|date:"d/m/Y" }}</td>
-            <td>{{ cuota.cuota_fecha_vencimiento|date:"d/m/Y" }}</td>
-            <td>{{ cuota.cuota_fecha_pago|date:"d/m/Y"|default:"Pendiente" }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<div class="card mb-4">
+    <div class="card-header">
+        <span class="card-title">Préstamo #{{ prestamo.id_prestamo }}</span>
+        <span class="status status-green">Aprobado</span>
+    </div>
+    <div class="card-body">
+        <div style="display:grid; grid-template-columns: repeat(4,1fr); gap:20px;">
+            <div>
+                <div class="text-muted text-sm">Empleado</div>
+                <div style="font-weight:600; margin-top:4px">{{ prestamo.Empleado }}</div>
+            </div>
+            <div>
+                <div class="text-muted text-sm">Tipo de Préstamo</div>
+                <div style="font-weight:600; margin-top:4px">{{ prestamo.TipoPrestamo }}</div>
+            </div>
+            <div>
+                <div class="text-muted text-sm">Monto Prestado</div>
+                <div style="font-weight:600; margin-top:4px" class="mono">${{ prestamo.monto_prestamo }}</div>
+            </div>
+            <div>
+                <div class="text-muted text-sm">Total a Pagar</div>
+                <div style="font-weight:600; margin-top:4px" class="mono">${{ prestamo.monto_pagar }}</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <span class="card-title">Cuotas — {{ prestamo.cantidad_cuotas }} en total</span>
+    </div>
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>N° Cuota</th>
+                    <th>Monto</th>
+                    <th>Fecha Emisión</th>
+                    <th>Fecha Vencimiento</th>
+                    <th>Fecha Pago</th>
+                    <th>Estado</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cuota in cuotas %}
+                <tr>
+                    <td>{{ cuota.numero_cuota }}</td>
+                    <td class="mono">${{ cuota.monto_cuota }}</td>
+                    <td class="td-muted">{{ cuota.cuota_fecha_emision|date:"d/m/Y" }}</td>
+                    <td>{{ cuota.cuota_fecha_vencimiento|date:"d/m/Y" }}</td>
+                    <td>{{ cuota.cuota_fecha_pago|date:"d/m/Y"|default:"—" }}</td>
+                    <td>
+                        {% if cuota.estado == 'Pagada' %}
+                            <span class="status status-green">Pagada</span>
+                        {% elif cuota.estado == 'Vencida' %}
+                            <span class="status status-red">Vencida</span>
+                        {% else %}
+                            <span class="status status-blue">Al día</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if cuota.estado != 'Pagada' %}
+                        <form method="post" action="{% url 'cuota_pagar' cuota.id_cuota %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-success btn-sm">Marcar Pagada</button>
+                        </form>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
 {% endblock %}

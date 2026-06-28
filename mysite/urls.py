@@ -19,7 +19,8 @@ router.register(r'comunas', views.ComunaViewSet)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),  # Todos los endpoints bajo /api/
-    path('', views.employee_list, name='employee_list'),
+    path('', views.dashboard, name='dashboard'),
+    path('employees/', views.employee_list, name='employee_list'),
     path('employees/create/', views.employee_create, name='employee_create'),
     path('employees/<str:RUT_empleado>/update/', views.employee_update, name='employee_update'),
     path('employees/<str:RUT_empleado>/delete/', views.employee_delete, name='employee_delete'),
@@ -27,4 +28,10 @@ urlpatterns = [
     path('loans/create/', views.loan_create, name='loan_create'),
     path('loans/<int:id_prestamo>/', views.loan_detail, name='loan_detail'),
     path('loans/<int:id_prestamo>/delete/', views.loan_delete, name='loan_delete'),
+    path('cuotas/<int:id_cuota>/pagar/', views.cuota_pagar, name='cuota_pagar'),
+    path('loans/approvals/', views.loan_approvals, name='loan_approvals'),
+    path('loans/<int:id_prestamo>/approve/', views.loan_approve, name='loan_approve'),
+    path('loans/<int:id_prestamo>/export/excel/', views.export_excel, name='export_excel'),
+    path('loans/<int:id_prestamo>/export/pdf/', views.export_pdf, name='export_pdf'),
+    path('loans/<int:id_prestamo>/reject/', views.loan_reject, name='loan_reject'),
 ]

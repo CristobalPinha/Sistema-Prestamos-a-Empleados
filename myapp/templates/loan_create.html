@@ -1,12 +1,49 @@
 {% extends 'base.html' %}
 
-{% block title %}Crear Prestamo{% endblock %}
+{% block title %}Nueva Solicitud{% endblock %}
+{% block page_title %}Nueva Solicitud de Préstamo{% endblock %}
+{% block topbar_actions %}
+    <a href="{% url 'loan_list' %}" class="btn btn-ghost btn-sm">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        Volver
+    </a>
+{% endblock %}
 
 {% block content %}
-<h1>Crear Prestamo</h1>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Crear</button>
-</form>
+<div class="card" style="max-width:580px">
+    <div class="card-header">
+        <span class="card-title">Datos de la Solicitud</span>
+    </div>
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-grid">
+                <div class="form-group full">
+                    <label>Empleado</label>
+                    {{ form.Empleado }}
+                    {{ form.Empleado.errors }}
+                </div>
+                <div class="form-group full">
+                    <label>Tipo de Préstamo</label>
+                    {{ form.TipoPrestamo }}
+                    {{ form.TipoPrestamo.errors }}
+                </div>
+                <div class="form-group">
+                    <label>Monto Solicitado ($)</label>
+                    {{ form.monto_prestamo }}
+                    {{ form.monto_prestamo.errors }}
+                </div>
+                <div class="form-group">
+                    <label>Cantidad de Cuotas</label>
+                    {{ form.cantidad_cuotas }}
+                    {{ form.cantidad_cuotas.errors }}
+                </div>
+            </div>
+            <div class="form-actions mt-4">
+                <button type="submit" class="btn btn-primary">Enviar Solicitud</button>
+                <a href="{% url 'loan_list' %}" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
 {% endblock %}

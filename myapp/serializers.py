@@ -25,9 +25,12 @@ class TipoPrestamoSerializer(serializers.ModelSerializer):
 
 
 class CuotaSerializer(serializers.ModelSerializer):
+    # read_only=True porque es un @property, no un campo de la base de datos
+    estado = serializers.CharField(read_only=True)
+
     class Meta:
         model = Cuota
-        fields = ['id_cuota', 'numero_cuota', 'monto_cuota', 'cuota_fecha_vencimiento', 'cuota_fecha_pago']
+        fields = ['id_cuota', 'numero_cuota', 'monto_cuota', 'cuota_fecha_vencimiento', 'cuota_fecha_pago', 'estado']
 
 
 class PrestamoSerializer(serializers.ModelSerializer):

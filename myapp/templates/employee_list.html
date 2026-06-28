@@ -1,38 +1,58 @@
 {% extends 'base.html' %}
 
-{% block title %}Listar Empleados{% endblock %}
+{% block title %}Empleados{% endblock %}
+{% block page_title %}Directorio de Empleados{% endblock %}
+{% block topbar_actions %}
+    <a href="{% url 'employee_create' %}" class="btn btn-primary btn-sm">+ Registrar Empleado</a>
+{% endblock %}
 
 {% block content %}
-<h1>Empleados</h1>
-<table>
-    <thead>
-        <tr>
-            <th>RUT</th>
-            <th>Nombre</th>
-            <th>Apellido</th>
-            <th>Direccion</th>
-            <th>Comuna</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for empleado in empleados %}
-        <tr>
-            <td>{{ empleado.RUT_empleado }}</td>
-            <td>{{ empleado.nombre_empleado }}</td>
-            <td>{{ empleado.apellido_empleado }}</td>
-            <td>{{ empleado.direccion_empleado }}</td>
-            <td>{{ empleado.Comuna.nombre_comuna }}</td>
-            <td>
-                <a href="{% url 'employee_update' RUT_empleado=empleado.RUT_empleado %}">Actualizar</a>
-                <a href="{% url 'employee_delete' RUT_empleado=empleado.RUT_empleado %}">Eliminar</a>
-            </td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="6">No hay empleados registrados.</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<div class="card">
+    <div class="card-header">
+        <span class="card-title">Todos los Empleados</span>
+        <span class="text-muted text-sm">{{ empleados|length }} registrados</span>
+    </div>
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>RUT</th>
+                    <th>Nombre</th>
+                    <th>Dirección</th>
+                    <th>Comuna</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for empleado in empleados %}
+                <tr>
+                    <td class="mono">{{ empleado.RUT_empleado }}</td>
+                    <td><strong>{{ empleado.nombre_empleado }} {{ empleado.apellido_empleado }}</strong></td>
+                    <td class="td-muted">{{ empleado.direccion_empleado }}</td>
+                    <td>{{ empleado.Comuna.nombre_comuna }}</td>
+                    <td>
+                        <div class="flex gap-2">
+                            <a href="{% url 'employee_update' RUT_empleado=empleado.RUT_empleado %}" class="btn btn-secondary btn-sm">Editar</a>
+                            <a href="{% url 'employee_delete' RUT_empleado=empleado.RUT_empleado %}" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar a {{ empleado.nombre_empleado }}?')">Eliminar</a>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5">
+                        <div class="empty-state">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                <circle cx="9" cy="7" r="4"/>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+                            </svg>
+                            <p>No hay empleados registrados.</p>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endblock %}
