@@ -1,0 +1,42 @@
+name: Run Tests
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_DATABASE: lendin_test
+          MYSQL_ROOT_PASSWORD: root
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+    
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install coverage
+
+      - name: Run tests with coverage
+        env:
+          DB_ENGINE: django.db.backends.mysql
+          DB_HOST: 127.0.0.1
+          DB_USER: root
+          DB_PASSWORD: root
+          DB_NAME: lendin_test
+        run: |
+          python manage.py migrate --no-input
+          coverage run --source='.' manage.py test myapp --verbosity=2
+          coverage report
